@@ -29,19 +29,15 @@ fi
 echo "# Cleaned"
 
 echo "#\n# Running test\n#\n"
-# Starting shopware-cli container
-echo "### Starting shopware-cli container..."
-TEST_CONTAINER_SHOPWARE_CLI_ID=$( docker run -d --name=shopware-cli-alpine 03192859189254/shopware-cli-alpine:latest-dev )
-TEST_CONTAINER_SHOPWARE_CLI_STATUS=$(sleep 5 && docker inspect -f '{{.State.Running}}' $TEST_CONTAINER_SHOPWARE_CLI_ID)
+# Testing container readiness
+echo "### Testing container readiness..."
+TEST_CONTAINER_MAIN_ID=$( docker run -d --name=shopware-cli-alpine 03192859189254/shopware-cli-alpine:latest-dev )
+CONDITION="docker exec $TEST_CONTAINER_MAIN_ID docker-rediness-test"
+MAX_TRIES=300
+SECONDS_BETWEEN_TRIES=1
+c=0
+while ! eval "$CONDITION"; do if [ $c -ge ${MAX_TRIES} ]; then echo "Error shopware-cli-alpine container failed, printing logs and exiting\n"; docker logs $TEST_CONTAINER_MAIN_ID; exit 1; else c=$(($c + 1)); fi; echo "Try $c failed"; sleep ${SECONDS_BETWEEN_TRIES}; done && echo "### Test Succeeded\n"
 
-# Testing shopware container
-echo "### Testing shopware container..."
-if [ "$TEST_CONTAINER_SHOPWARE_CLI_STATUS" = "true" ]; then
-    echo "### Test Succeeded\n";
-else 
-        echo "Shopware-cli container failed, print logs and exiting\n";
-    docker logs $TEST_CONTAINER_SHOPWARE_CLI_ID;
-fi
 
 
 exit 0

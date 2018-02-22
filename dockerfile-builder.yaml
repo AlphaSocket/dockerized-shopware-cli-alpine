@@ -86,19 +86,26 @@ test:
     #
     # Starting
     #
-    - title: "Starting shopware-cli container"
+    - title: "Testing container readiness"
       commands:
-        - TEST_CONTAINER_SHOPWARE_CLI_ID=$(
+        - TEST_CONTAINER_MAIN_ID=$(
             docker run
               -d --name=$TEST_CONTAINER_NAME
               ${BUILD_USER}/${BUILD_NAME}:${BUILD_VERSION}
           )
-        - TEST_CONTAINER_SHOPWARE_CLI_STATUS=$(sleep 5 && docker inspect -f '{{.State.Running}}' $TEST_CONTAINER_SHOPWARE_CLI_ID)
-
-    - title: "Testing shopware container"
-      shell_condition: '"$TEST_CONTAINER_SHOPWARE_CLI_STATUS" = "true"'
-      commands:
-        - echo "### Test Succeeded\n"
-      else:
-        - echo "Shopware-cli container failed, print logs and exiting\n"
-        - docker logs $TEST_CONTAINER_SHOPWARE_CLI_ID
+        - CONDITION="docker exec $TEST_CONTAINER_MAIN_ID docker-rediness-test"
+        - MAX_TRIES=300
+        - SECONDS_BETWEEN_TRIES=1
+        - c=0
+        - while ! eval "$CONDITION"; 
+          do 
+            if [ $c -ge ${MAX_TRIES} ]; then
+                echo "Error $TEST_CONTAINER_NAME container failed, printing logs and exiting\n";
+                docker logs $TEST_CONTAINER_MAIN_ID;
+                exit 1;
+              else
+                c=$(($c + 1));
+            fi;
+            echo "Try $c failed"; 
+            sleep ${SECONDS_BETWEEN_TRIES}; 
+          done && echo "### Test Succeeded\n"
