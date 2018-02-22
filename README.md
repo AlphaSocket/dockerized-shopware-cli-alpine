@@ -3,10 +3,10 @@
 Alpine container with all dependencies to manage a shopware installation (crons included)
 
 
-| [![Build Status](https://semaphoreci.com/api/v1/alphasocket/dockerized-shopware-cli-alpine/branches/latest/badge.svg)](https://semaphoreci.com/alphasocket/dockerized-shopware-cli-alpine) | Size / Layers | Version |
+| [![Build Status](https://semaphoreci.com/api/v1/alphasocket/dockerized-shopware-cli-alpine/branches/latest-dev/badge.svg)](https://semaphoreci.com/alphasocket/dockerized-shopware-cli-alpine) | Size / Layers | Version |
 | ----- | ----- | ----- |
-| Dev image | [![](https://images.microbadger.com/badges/image/03192859189254/dockerized-shopware-cli-alpine:latest.svg)](https://microbadger.com/images/03192859189254/shopware-cli-alpine:latest ) | [![](https://images.microbadger.com/badges/version/03192859189254/dockerized-shopware-cli-alpine:latest.svg)](https://microbadger.com/images/03192859189254/shopware-cli-alpine:latest) |
-| Prd image | [![](https://images.microbadger.com/badges/image/alphasocket/shopware-cli-alpine:latest.svg)](https://microbadger.com/images/alphasocket/shopware-cli-alpine:latest ) | [![](https://images.microbadger.com/badges/version/alphasocket/shopware-cli-alpine:latest.svg)](https://microbadger.com/images/alphasocket/shopware-cli-alpine:latest) |
+| Dev image | [![](https://images.microbadger.com/badges/image/03192859189254/dockerized-shopware-cli-alpine:latest-dev.svg)](https://microbadger.com/images/03192859189254/shopware-cli-alpine:latest-dev ) | [![](https://images.microbadger.com/badges/version/03192859189254/dockerized-shopware-cli-alpine:latest-dev.svg)](https://microbadger.com/images/03192859189254/shopware-cli-alpine:latest-dev) |
+| Prd image | [![](https://images.microbadger.com/badges/image/alphasocket/shopware-cli-alpine:latest-dev.svg)](https://microbadger.com/images/alphasocket/shopware-cli-alpine:latest-dev ) | [![](https://images.microbadger.com/badges/version/alphasocket/shopware-cli-alpine:latest-dev.svg)](https://microbadger.com/images/alphasocket/shopware-cli-alpine:latest-dev) |
 
 ## Branches & Versions
 - latest
@@ -20,6 +20,8 @@ Alpine container with all dependencies to manage a shopware installation (crons 
   + curl
   + git
   + mysql-client
+  + nodejs
+  + nodejs-npm
   + $SETUP_DEPENDENCIES_SECURITY
   + php7
   + php7-phar

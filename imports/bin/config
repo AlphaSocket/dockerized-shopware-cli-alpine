@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# exit if a command fails
+set -e
+
+# Setup bin folder
+echo "### Setup bin folder..."
+mkdir -p $CONFIG_PATHS_BINARIES
+
+# Set bin executable
+echo "### Set bin executable..."
+chmod +x -R $CONFIG_PATHS_BINARIES
+
+# Setup crontab to update binaries
+echo "### Setup crontab to update binaries..."
+echo "#!/bin/sh\n$(which composer.phar) self-update" > /etc/periodic/daily/update-composer
+
+
+
+exit 0
