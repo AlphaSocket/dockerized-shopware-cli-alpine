@@ -22,7 +22,7 @@ setup:
   envvars:
     dependencies:
       management: bash htop curl git mysql-client
-      php: php7 php7-phar php7-soap php7-iconv php7-xml php7-json php7-zlib php7-gd php7-ctype php7-gd php7-pdo_mysql php7-dom php7-mcrypt php7-curl php7-openssl php7-opcache
+      php: php7 php7-phar php7-soap php7-iconv php7-intl php7-xml php7-json php7-zlib php7-gd php7-ctype php7-gd php7-pdo_mysql php7-dom php7-mcrypt php7-curl php7-openssl php7-opcache
       develop: 
         valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "nodejs nodejs-npm" || echo ""'
       runtime: 

@@ -25,6 +25,7 @@ Alpine container with all dependencies to manage a shopware installation (crons 
   + php7-phar
   + php7-soap
   + php7-iconv
+  + php7-intl
   + php7-xml
   + php7-json
   + php7-zlib
