@@ -6,11 +6,6 @@ echo "### Install all dependencies..."
 apk add --no-cache gettext $SETUP_DEPENDENCIES_SETUP $SETUP_DEPENDENCIES_CONFIG $SETUP_DEPENDENCIES_RUNTIME
 
 
-# Link php
-echo "### Link php..."
-if [ -f /usr/bin/php ]; then
-    ln -s $(which php7) /usr/bin/php;
-fi
 # Setup bin folder
 echo "### Setup bin folder..."
 mkdir -p $SETUP_PATHS_BINARIES
