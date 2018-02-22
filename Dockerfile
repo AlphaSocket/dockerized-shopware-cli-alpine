@@ -31,9 +31,9 @@ ENV \
 	SETUP_DEPENDENCIES_SETUP="" \
 	SETUP_DEPENDENCIES_CONFIG="" \
 	SETUP_DEPENDENCIES_MANAGEMENT="bash htop curl git mysql-client" \
-	SETUP_DEPENDENCIES_PHP="php7 php7-phar php7-soap php7-iconv php7-xml php7-json php7-zlib php7-gd php7-ctype php7-gd php7-pdo_mysql php7-dom php7-mcrypt php7-curl php7-openssl php7-opcache" \
+	SETUP_DEPENDENCIES_PHP="php7 php7-phar php7-soap php7-iconv php7-intl php7-xml php7-json php7-zlib php7-gd php7-ctype php7-gd php7-pdo_mysql php7-dom php7-mcrypt php7-curl php7-openssl php7-opcache" \
 	SETUP_DEPENDENCIES_DEVELOP="nodejs nodejs-npm" \
-	SETUP_DEPENDENCIES_RUNTIME="bash htop curl git mysql-client nodejs nodejs-npm $SETUP_DEPENDENCIES_SECURITY php7 php7-phar php7-soap php7-iconv php7-xml php7-json php7-zlib php7-gd php7-ctype php7-gd php7-pdo_mysql php7-dom php7-mcrypt php7-curl php7-openssl php7-opcache" \
+	SETUP_DEPENDENCIES_RUNTIME="bash htop curl git mysql-client nodejs nodejs-npm $SETUP_DEPENDENCIES_SECURITY php7 php7-phar php7-soap php7-iconv php7-intl php7-xml php7-json php7-zlib php7-gd php7-ctype php7-gd php7-pdo_mysql php7-dom php7-mcrypt php7-curl php7-openssl php7-opcache" \
 	SETUP_PATHS_SETUP="/usr/local/bin/setup" \
 	SETUP_PATHS_CONFIG="/usr/local/bin/config" \
 	SETUP_PATHS_BINARIES="/usr/local/bin" \
@@ -58,13 +58,13 @@ ADD imports/bin/docker-config /usr/local/bin/docker-config
 ADD imports/bin/docker-run /usr/local/bin/docker-run
 ADD imports/bin/docker-rediness-test /usr/local/bin/docker-rediness-test
 ADD imports/bin/docker-liveness-test /usr/local/bin/docker-liveness-test
-ADD imports/bin/setup /usr/local/bin/setup/1519337813
-ADD imports/bin/config /usr/local/bin/config/1519337813
+ADD imports/bin/setup /usr/local/bin/setup/1519338599
+ADD imports/bin/config /usr/local/bin/config/1519338599
 
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1519337813 1>/dev/stdout 2>/dev/stderr
+    /usr/local/bin/setup/1519338599 1>/dev/stdout 2>/dev/stderr
 
 
 
