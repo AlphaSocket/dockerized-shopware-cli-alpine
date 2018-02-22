@@ -33,7 +33,7 @@ echo "#\n# Running test\n#\n"
 echo "### Testing container readiness..."
 TEST_CONTAINER_MAIN_ID=$( docker run -d --name=shopware-cli-alpine 03192859189254/shopware-cli-alpine:latest )
 TEST_CONDITION="docker exec $TEST_CONTAINER_MAIN_ID docker-rediness-test"
-TEST_BREAK_CONDITION='"$(docker inspect -f '{{.State.Running}}' $TEST_CONTAINER_MAIN_ID)" != "true"'
+TEST_BREAK_CONDITION='[ "$(docker inspect -f '{{.State.Running}}' "$TEST_CONTAINER_MAIN_ID")" != "true" ]'
 MAX_TRIES=300
 SECONDS_BETWEEN_TRIES=1
 c=0
