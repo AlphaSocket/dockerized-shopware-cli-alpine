@@ -1,0 +1,108 @@
+project:
+  title: &project_title Alphasocket/dockerized-shopware-cli-alpine
+  codename: &project_codename shopware-cli-alpine
+  description: Alpine container with all dependencies to manage a shopware installation (crons included)
+
+#
+# Build process
+# Creates dockerfile and file used in it
+#
+build:
+  envvars:
+    name: *project_codename
+    # Docker
+    from: alpine:latest
+    cmd: "/usr/sbin/crond -f -l $CONFIG_CRON_LOG_LEVEL"
+
+#
+# Setup process injected in dockerfile
+#
+setup:
+  # Setup env
+  envvars:
+    dependencies:
+      management: bash htop curl git mysql-client
+      php: php7 php7-phar php7-soap php7-iconv php7-xml php7-json php7-zlib php7-gd php7-ctype php7-gd php7-pdo_mysql php7-dom php7-mcrypt php7-curl php7-openssl php7-opcache
+      develop: 
+        valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "nodejs nodejs-npm" || echo ""'
+      runtime: 
+        valueFromParse:  $SETUP_DEPENDENCIES_MANAGEMENT $SETUP_DEPENDENCIES_DEVELOP $SETUP_DEPENDENCIES_SECURITY $SETUP_DEPENDENCIES_PHP
+    paths:
+      binaries: /usr/local/bin
+    urls:
+      composer: https://getcomposer.org/composer.phar
+  # Setup Processes
+  processes:
+    - title: "Link php"
+      commands:
+        - ln -s $(which php7) /usr/bin/php
+
+    - title: "Setup bin folder"
+      commands:
+        - mkdir -p $SETUP_PATHS_BINARIES
+        #- chown $CONFIG_USER:$CONFIG_GROUP $CONFIG_PATHS_BINARIES
+
+    - title: "Download binaries"
+      commands:
+       - curl -o $SETUP_PATHS_BINARIES/composer.phar $SETUP_URLS_COMPOSER
+       - chmod -R +x $SETUP_PATHS_BINARIES
+
+#
+# Config process run just before the entrypoint
+#
+config:
+  # Config env
+  envvars:
+    groups:
+      main:
+        id: 1200
+        name: 'shopware'
+    users:
+      main: 
+        id: 1200
+        name: 'shopware-cli'
+        groups: 'shopware'
+    paths:
+      webroot: /var/www/html
+      binaries:
+        valueFromParse: $SETUP_PATHS_BINARIES
+    cron:
+      log:
+        level: 8
+
+  processes:
+    
+    - title: "Setup bin folder"
+      commands:
+        - mkdir -p $CONFIG_PATHS_BINARIES
+        #- chown $CONFIG_USER:$CONFIG_GROUP $CONFIG_PATHS_BINARIES
+
+    - title: "Set bin executable"
+      commands:
+        - chmod +x -R $CONFIG_PATHS_BINARIES
+
+    - title: "Setup crontab to update binaries"
+      commands:
+        - echo "#!/bin/sh\n$(which composer.phar) self-update" > /etc/periodic/daily/update-composer
+
+test:
+  processes:
+    #
+    # Starting
+    #
+    - title: "Starting shopware-cli container"
+      commands:
+        - TEST_CONTAINER_SHOPWARE_CLI_ID=$(
+            docker run
+              -d --name=$TEST_CONTAINER_NAME
+              ${BUILD_USER}/${BUILD_NAME}:${BUILD_VERSION}
+          )
+        - TEST_CONTAINER_SHOPWARE_CLI_STATUS=$(sleep 5 && docker inspect -f '{{.State.Running}}' $TEST_CONTAINER_SHOPWARE_CLI_ID)
+
+    - title: "Testing shopware container"
+      shell_condition: '"$TEST_CONTAINER_SHOPWARE_CLI_STATUS" = "true"'
+      commands:
+        - echo "### Test Succeeded\n"
+      else:
+        - echo "Shopware-cli container failed, print logs and exiting\n"
+        - docker logs $TEST_CONTAINER_SHOPWARE_CLI_ID
