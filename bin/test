@@ -1,0 +1,47 @@
+#!/bin/sh
+
+#
+# Local test script to test docker images
+#
+
+# exit if a command fails
+set -e
+
+CURL=$(which curl)
+DOCKER=$(which docker)
+
+if [ "$CURL" = '' ]; then
+    echo 'The package curl is required\n'
+    exit 1
+fi
+
+if [ "$DOCKER" = '' ]; then
+    echo 'Docker is required\n'
+    exit 1
+fi
+
+echo "#\n# Cleaning docker\n#\n"
+running_containers=$(docker ps -aq)
+if [ "$running_containers" ] 
+    then
+        docker stop $running_containers -t 0 && docker system prune -f
+fi
+echo "# Cleaned"
+
+echo "#\n# Running test\n#\n"
+# Starting shopware-cli container
+echo "### Starting shopware-cli container..."
+TEST_CONTAINER_SHOPWARE_CLI_ID=$( docker run -d --name=shopware-cli-alpine 03192859189254/shopware-cli-alpine:latest )
+TEST_CONTAINER_SHOPWARE_CLI_STATUS=$(sleep 5 && docker inspect -f '{{.State.Running}}' $TEST_CONTAINER_SHOPWARE_CLI_ID)
+
+# Testing shopware container
+echo "### Testing shopware container..."
+if [ "$TEST_CONTAINER_SHOPWARE_CLI_STATUS" = "true" ]; then
+    echo "### Test Succeeded\n";
+else 
+        echo "Shopware-cli container failed, print logs and exiting\n";
+    docker logs $TEST_CONTAINER_SHOPWARE_CLI_ID;
+fi
+
+
+exit 0
