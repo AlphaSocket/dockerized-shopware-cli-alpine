@@ -33,11 +33,6 @@ setup:
       composer: https://getcomposer.org/composer.phar
   # Setup Processes
   processes:
-    - title: "Link php"
-      shell_condition: ! -f /usr/bin/php
-      commands:
-        - ln -s $(which php7) /usr/bin/php
-
     - title: "Setup bin folder"
       commands:
         - mkdir -p $SETUP_PATHS_BINARIES
