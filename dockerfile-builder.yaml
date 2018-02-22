@@ -34,6 +34,7 @@ setup:
   # Setup Processes
   processes:
     - title: "Link php"
+      shell_condition: ! -f /usr/bin/php
       commands:
         - ln -s $(which php7) /usr/bin/php
 
