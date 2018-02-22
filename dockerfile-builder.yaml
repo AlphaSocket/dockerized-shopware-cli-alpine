@@ -94,7 +94,7 @@ test:
               ${BUILD_USER}/${BUILD_NAME}:${BUILD_VERSION}
           )
         - TEST_CONDITION="docker exec $TEST_CONTAINER_MAIN_ID docker-rediness-test"
-        - TEST_BREAK_CONDITION='"$(docker inspect -f '{{.State.Running}}' $TEST_CONTAINER_MAIN_ID)" != "true"'
+        - TEST_BREAK_CONDITION='[ "$(docker inspect -f '{{.State.Running}}' "$TEST_CONTAINER_MAIN_ID")" != "true" ]'
         - MAX_TRIES=300
         - SECONDS_BETWEEN_TRIES=1
         - c=0

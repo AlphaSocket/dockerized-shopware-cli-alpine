@@ -40,7 +40,7 @@ if [ $CUR_BRANCH == $GIT_BRANCH_MASTER ] || [ $CUR_BRANCH == $GIT_BRANCH_DEVELOP
         fi
         
         if [ ! -z "$COMMIT_MESSAGE" ]; then
-            GIT_MESSAGE="-m $COMMIT_MESSAGE";
+            GIT_MESSAGE="-m \"$COMMIT_MESSAGE\"";
         fi
         git commit --author "$GIT_AUTHOR" $GIT_MESSAGE
         # If the deploy-script is modified run the new script and exit
