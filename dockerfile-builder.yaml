@@ -100,7 +100,7 @@ test:
         - c=0
         - while ! eval "$TEST_CONDITION"; 
           do 
-            if [ $c -ge ${MAX_TRIES} ] || [ eval "$TEST_BREAK_CONDITION" ] ; then
+            if [ $c -ge ${MAX_TRIES} ] || eval "$TEST_BREAK_CONDITION" ; then
                 echo "Error $TEST_CONTAINER_NAME container failed, printing logs and exiting\n";
                 docker logs $TEST_CONTAINER_MAIN_ID;
                 exit 1;
